@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import type { Patient } from '../../../../core/entities/patient.entity';
@@ -8,6 +8,7 @@ import { PATIENT_REPOSITORY } from '../../../../core/tokens/injection-tokens';
 import { SearchInputComponent } from '../../../../shared/components/search-input/search-input.component';
 import { StatusBadgeComponent } from '../../../../shared/components/status-badge/status-badge.component';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
+
 
 @Component({
   selector: 'app-patient-list',
@@ -41,6 +42,7 @@ export class PatientListComponent implements OnInit {
   constructor(
     @Inject(PATIENT_REPOSITORY) private readonly patientRepo: IPatientRepository,
     private readonly router: Router,
+    private readonly cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -64,9 +66,11 @@ export class PatientListComponent implements OnInit {
         this.totalPatients = response.total;
         this.totalPages = response.totalPages;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
     });
   }
