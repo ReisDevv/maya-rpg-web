@@ -37,6 +37,7 @@
             formControlName="cpf"
             class="form-input"
             placeholder="000.000.000-00"
+            mask="000.000.000-00"
             [class.invalid]="f['cpf'].invalid && f['cpf'].touched"
           />
           <span class="form-error" *ngIf="f['cpf'].invalid && f['cpf'].touched">
@@ -66,10 +67,11 @@
           <label for="phone" class="form-label">Telefone *</label>
           <input
             id="phone"
-            type="tel"
+            type="text"
             formControlName="phone"
             class="form-input"
-            placeholder="(11) 99999-9999"
+            placeholder="(00) 00000-0000"
+            mask="(00) 00000-0000"
             [class.invalid]="f['phone'].invalid && f['phone'].touched"
           />
           <span class="form-error" *ngIf="f['phone'].invalid && f['phone'].touched">
@@ -89,6 +91,23 @@
           <span class="form-error" *ngIf="f['birthDate'].invalid && f['birthDate'].touched">
             Data de nascimento é obrigatória
           </span>
+        </div>
+      </div>
+
+      <!-- Endereço -->
+      <h3 class="section-title">Endereço</h3>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="cep" class="form-label">CEP</label>
+          <input
+            id="cep"
+            type="text"
+            formControlName="cep"
+            class="form-input"
+            placeholder="00000-000"
+            mask="00000-000"
+          />
         </div>
       </div>
 

@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import type { IPatientRepository } from '../../../../core/interfaces';
 import { PatientStatus } from '../../../../core/enums/patient-status.enum';
 import { PATIENT_REPOSITORY } from '../../../../core/tokens/injection-tokens';
@@ -9,7 +10,8 @@ import { PATIENT_REPOSITORY } from '../../../../core/tokens/injection-tokens';
 @Component({
   selector: 'app-patient-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, NgxMaskDirective],
+  providers: [provideNgxMask()],
   templateUrl: './patient-form.component.html',
   styleUrl: './patient-form.component.scss',
 })
@@ -51,6 +53,7 @@ export class PatientFormComponent implements OnInit {
       phone: ['', [Validators.required]],
       cpf: ['', [Validators.required]],
       birthDate: ['', [Validators.required]],
+      cep: [''],
       status: [PatientStatus.PENDING, [Validators.required]],
       notes: [''],
     });
@@ -88,10 +91,10 @@ export class PatientFormComponent implements OnInit {
     this.errorMessage = '';
 
     const formValue = this.form.value;
+    const { cep, ...patientData } = formValue;
     const data = {
-      ...formValue,
-      userId: '',
-      birthDate: new Date(formValue.birthDate),
+      ...patientData,
+      birthDate: new Date(patientData.birthDate),
     };
 
     const request = this.isEditing
