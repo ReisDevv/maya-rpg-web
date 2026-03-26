@@ -61,8 +61,7 @@ export class PatientFormComponent implements OnInit {
   }
 
   private loadPatient(id: string): void {
-    const nav = this.router.getCurrentNavigation();
-    const state = nav?.extras?.state as { patient?: Patient };
+    const state = window.history.state as { patient?: Patient };
 
     if (state?.patient) {
       this.patchForm(state.patient);
