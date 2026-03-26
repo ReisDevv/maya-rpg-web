@@ -28,7 +28,7 @@ export class PatientRepository implements IPatientRepository {
   }
 
   create(patient: Omit<Patient, 'id' | 'createdAt' | 'updatedAt'>): Observable<Patient> {
-    const { userId, ...cleanData } = patient as any;
+    const { userId, professionalId, ...cleanData } = patient as any;
     return this.api.post<Patient>(this.endpoint, cleanData);
   }
 
