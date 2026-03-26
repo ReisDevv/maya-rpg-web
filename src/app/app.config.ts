@@ -5,7 +5,6 @@ import { routes } from './app.routes';
 import { authInterceptor } from './data/interceptors/auth.interceptor';
 
 
-// 1. IMPORTANTE: Importe o ApiService aqui!
 import { ApiService } from './data/services/api.service';
 
 import {

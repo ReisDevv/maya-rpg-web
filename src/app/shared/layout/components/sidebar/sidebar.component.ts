@@ -53,6 +53,7 @@ export class SidebarComponent {
     { label: 'Exercícios', icon: '🏋️', route: '/exercises' },
     { label: 'Prescrições', icon: '📋', route: '/prescriptions' },
     { label: 'Prontuários', icon: '📁', route: '/medical-records' },
+    { label: 'Aniversários', icon: '🎂', route: '/birthdays' },
   ];
 
   toggleCollapse(): void {
