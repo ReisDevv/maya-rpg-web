@@ -98,7 +98,9 @@ export class PatientListComponent implements OnInit {
   }
 
   navigateToEdit(patient: Patient): void {
-    this.router.navigate(['/patients', patient.id, 'edit']);
+    this.router.navigate(['/patients', patient.id, 'edit'], {
+      state: { patient }
+    });
   }
 
   navigateToDetail(patient: Patient): void {

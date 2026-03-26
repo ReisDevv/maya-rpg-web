@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import type { IPatientRepository } from '../../../../core/interfaces';
+import type { Patient } from '../../../../core/entities/patient.entity';
 import { PatientStatus } from '../../../../core/enums/patient-status.enum';
 import { PATIENT_REPOSITORY } from '../../../../core/tokens/injection-tokens';
 
@@ -60,24 +61,36 @@ export class PatientFormComponent implements OnInit {
   }
 
   private loadPatient(id: string): void {
+    const nav = this.router.getCurrentNavigation();
+    const state = nav?.extras?.state as { patient?: Patient };
+
+    if (state?.patient) {
+      this.patchForm(state.patient);
+      return;
+    }
+
     this.isLoading = true;
     this.patientRepo.getById(id).subscribe({
       next: (patient) => {
-        this.form.patchValue({
-          fullName: patient.fullName,
-          email: patient.email,
-          phone: patient.phone,
-          cpf: patient.cpf,
-          birthDate: this.formatDateForInput(patient.birthDate),
-          status: patient.status,
-          notes: patient.notes || '',
-        });
+        this.patchForm(patient);
         this.isLoading = false;
       },
       error: () => {
         this.errorMessage = 'Erro ao carregar paciente.';
         this.isLoading = false;
       },
+    });
+  }
+
+  private patchForm(patient: Patient): void {
+    this.form.patchValue({
+      fullName: patient.fullName,
+      email: patient.email,
+      phone: patient.phone,
+      cpf: patient.cpf,
+      birthDate: this.formatDateForInput(patient.birthDate),
+      status: patient.status,
+      notes: patient.notes || '',
     });
   }
 
