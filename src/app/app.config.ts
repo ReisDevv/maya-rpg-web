@@ -4,7 +4,9 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
 import { authInterceptor } from './data/interceptors/auth.interceptor';
 
-// Importando os Tokens e Services
+// 1. IMPORTANTE: Importe o ApiService aqui!
+import { ApiService } from './data/services/api.service';
+
 import {
   PATIENT_REPOSITORY,
   EXERCISE_REPOSITORY,
@@ -13,7 +15,6 @@ import {
 } from './core/tokens/injection-tokens';
 import { AuthService } from './data/services/auth.service';
 
-// Importando os Repositórios REAIS (Adeus, Mocks!)
 import { PatientRepository } from './data/repositories/patient.repository';
 import { ExerciseRepository } from './data/repositories/exercise.repository';
 import { PrescriptionRepository } from './data/repositories/prescription.repository';
@@ -24,7 +25,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor])),
 
-    // Injeção de Dependências Reais apontando para a sua API
+    ApiService,
+
     { provide: PATIENT_REPOSITORY, useClass: PatientRepository },
     { provide: EXERCISE_REPOSITORY, useClass: ExerciseRepository },
     { provide: PRESCRIPTION_REPOSITORY, useClass: PrescriptionRepository },
