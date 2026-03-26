@@ -32,8 +32,7 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
   }
 
   create(record: Omit<MedicalRecord, 'id' | 'createdAt' | 'updatedAt'>): Observable<MedicalRecord> {
-    const { professionalId, ...cleanData } = record as any;
-    return this.api.post<MedicalRecord>(this.endpoint, cleanData);
+    return this.api.post<MedicalRecord>(this.endpoint, record);
   }
 
   update(id: string, record: Partial<MedicalRecord>): Observable<MedicalRecord> {
