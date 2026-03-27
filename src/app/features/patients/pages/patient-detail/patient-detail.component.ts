@@ -228,7 +228,9 @@ export class PatientDetailComponent implements OnInit {
 
   goToEdit(): void {
     if (this.patient) {
-      this.router.navigate(['/patients', this.patient.id, 'edit']);
+      this.router.navigate(['/patients', this.patient.id, 'edit'], {
+        state: { patient: this.patient },
+      });
     }
   }
 
