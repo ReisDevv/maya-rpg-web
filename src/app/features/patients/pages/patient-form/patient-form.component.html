@@ -140,6 +140,16 @@
         ></textarea>
       </div>
 
+      <div class="form-group">
+        <label class="form-label checkbox-label">
+          <input
+            type="checkbox"
+            formControlName="lgpdConsent"
+          />
+          Paciente consentiu com a LGPD
+        </label>
+      </div>
+
       <!-- Error -->
       <div class="form-error-global" *ngIf="errorMessage">
         {{ errorMessage }}
