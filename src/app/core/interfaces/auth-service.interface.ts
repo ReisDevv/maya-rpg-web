@@ -6,6 +6,12 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface RegisterRequest {
+  name: string;
+  email: string;
+  password: string;
+}
+
 export interface AuthTokens {
   accessToken: string;
   refreshToken: string;
@@ -17,4 +23,5 @@ export interface IAuthService {
   refreshToken(refreshToken: string): Observable<AuthTokens>;
   getCurrentUser(): Observable<User>;
   recoverPassword(email: string): Observable<void>;
+  register(data: RegisterRequest): Observable<void>;
 }
