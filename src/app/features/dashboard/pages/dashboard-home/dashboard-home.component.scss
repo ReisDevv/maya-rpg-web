@@ -1,39 +1,448 @@
 @use '../../../../shared/styles/variables' as *;
 @use '../../../../shared/styles/mixins' as *;
 
-.dashboard {
-  h1 {
-    margin-bottom: $spacing-xs;
+// ── Layout geral ──────────────────────────────────
+.dashboard-layout {
+  display: flex;
+  gap: $spacing-xl;
+  padding: $spacing-xl;
+  min-height: calc(100vh - 64px);
+}
+
+.dashboard-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.dashboard-sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+
+  @media (max-width: 1100px) {
+    display: none;
+  }
+}
+
+// ── Header ────────────────────────────────────────
+.dashboard-header {
+  margin-bottom: $spacing-xl;
+
+  .greeting {
+    font-size: $font-size-2xl;
+    font-weight: 700;
+    color: $maya-dark-teal;
+    margin: 0 0 4px;
   }
 
   .subtitle {
-    color: $maya-gray-400;
     font-size: $font-size-sm;
-    margin-bottom: $spacing-xl;
+    color: $maya-gray-400;
+    margin: 0;
   }
 }
 
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: $spacing-lg;
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+  color: $maya-gray-400;
 }
 
-.stat-card {
-  @include card;
+// ── Cards principais ──────────────────────────────
+.main-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-lg;
+  margin-bottom: $spacing-lg;
+}
+
+.main-card {
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  display: flex;
+  align-items: flex-start;
+  min-height: 140px;
+  transition: transform 0.2s;
+
+  &:hover { transform: translateY(-2px); }
+
+  &--coral { background: $maya-coral; }
+  &--teal { background: $maya-light-blue; }
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 1;
+
+  .card-label {
+    font-size: $font-size-xs;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.5px;
+  }
+
+  .card-value {
+    font-size: 3rem;
+    font-weight: 700;
+    color: $maya-white;
+    line-height: 1;
+  }
+
+  .card-sub {
+    font-size: $font-size-xs;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+  }
+}
+
+.card-shape {
+  position: absolute;
+  right: -20px;
+  bottom: -20px;
+  width: 120px;
+  height: 120px;
+  opacity: 0.3;
+
+  &--coral {
+    background: #b85a35;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  }
+
+  &--teal {
+    background: #3a9aaa;
+    border-radius: 50%;
+    clip-path: circle(50% at 70% 70%);
+  }
+}
+
+// ── Agendamentos ──────────────────────────────────
+.appointments-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-lg;
+  margin-bottom: $spacing-lg;
+}
+
+.appointments-card {
+  background: $maya-white;
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+  border: 1px solid $maya-gray-100;
+  box-shadow: $shadow-sm;
+
+  .card-title {
+    font-size: $font-size-xs;
+    font-weight: 700;
+    color: $maya-gray-600;
+    letter-spacing: 0.5px;
+    margin: 0 0 $spacing-md;
+  }
+}
+
+.appointments-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.appointment-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  font-size: $font-size-sm;
+
+  .appointment-time {
+    font-weight: 600;
+    color: $maya-coral;
+    min-width: 45px;
+  }
+
+  .appointment-separator { color: $maya-gray-300; }
+  .appointment-name { color: $maya-gray-600; }
+}
+
+.appointments-empty {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  color: $maya-gray-400;
+  font-size: $font-size-sm;
+}
+
+.next-card {
+  background: $maya-coral;
+  border-radius: $radius-xl;
   padding: $spacing-xl;
   display: flex;
   flex-direction: column;
-  gap: $spacing-xs;
+  gap: $spacing-sm;
+
+  &--empty {
+    background: $maya-gray-100;
+  }
+
+  .next-label {
+    font-size: $font-size-xs;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.5px;
+  }
+
+  .next-name {
+    font-size: $font-size-lg;
+    font-weight: 700;
+    color: $maya-white;
+  }
+
+  .next-name-empty {
+    font-size: $font-size-base;
+    color: $maya-gray-400;
+  }
+
+  .next-time {
+    font-size: $font-size-sm;
+    color: rgba(255, 255, 255, 0.9);
+  }
 }
 
-.stat-value {
-  font-size: $font-size-3xl;
-  font-weight: 700;
-  color: $maya-teal;
-}
-
-.stat-label {
+.link-add {
   font-size: $font-size-sm;
+  color: $maya-teal;
+  cursor: pointer;
+  font-weight: 600;
+
+  &:hover { text-decoration: underline; }
+}
+
+// ── Calendário ────────────────────────────────────
+.calendar-card {
+  background: $maya-brown;
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+  color: $maya-white;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-lg;
+
+  .calendar-title {
+    font-size: $font-size-sm;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  .calendar-month {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    background: rgba(255, 255, 255, 0.15);
+    padding: $spacing-xs $spacing-md;
+    border-radius: 20px;
+    font-size: $font-size-sm;
+    font-weight: 600;
+
+    .dropdown-arrow { font-size: 10px; }
+  }
+}
+
+.week-days {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: $spacing-lg;
+  gap: $spacing-sm;
+}
+
+.week-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-lg;
+  cursor: pointer;
+  transition: background 0.2s;
+  flex: 1;
+
+  &:hover { background: rgba(255, 255, 255, 0.1); }
+
+  &.active {
+    background: $maya-beige;
+    .day-label, .day-number { color: $maya-brown; }
+  }
+
+  .day-label {
+    font-size: $font-size-xs;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+  }
+
+  .day-number {
+    font-size: $font-size-lg;
+    font-weight: 700;
+    color: $maya-white;
+  }
+}
+
+.calendar-appointments {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: $spacing-md;
+}
+
+.cal-appointment {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  font-size: $font-size-sm;
+
+  .cal-time {
+    font-weight: 600;
+    color: $maya-beige;
+    min-width: 45px;
+  }
+
+  .cal-name { color: rgba(255, 255, 255, 0.9); }
+}
+
+.cal-empty {
+  font-size: $font-size-sm;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  padding: $spacing-md 0;
+}
+
+// ── Sidebar direita ───────────────────────────────
+.sidebar-card {
+  background: $maya-beige;
+  border-radius: $radius-xl;
+  padding: $spacing-lg;
+
+  .sidebar-title {
+    font-size: $font-size-sm;
+    font-weight: 700;
+    color: $maya-dark-teal;
+    margin: 0 0 $spacing-md;
+    text-align: center;
+  }
+}
+
+.birthday-group {
+  margin-bottom: $spacing-md;
+}
+
+.birthday-date {
+  font-size: $font-size-xs;
+  color: $maya-gray-500;
+  font-weight: 600;
+  display: block;
+  margin-bottom: $spacing-xs;
+}
+
+.birthday-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-sm;
+  border-radius: $radius-md;
+  background: $maya-white;
+
+  &.birthday-today {
+    background: rgba($maya-coral, 0.1);
+    border-left: 3px solid $maya-coral;
+  }
+}
+
+.birthday-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: $maya-teal;
+  color: $maya-white;
+  font-size: $font-size-xs;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.birthday-info {
+  flex: 1;
+
+  .birthday-msg {
+    font-size: $font-size-xs;
+    color: $maya-gray-600;
+    line-height: 1.4;
+  }
+}
+
+.sidebar-empty {
+  text-align: center;
   color: $maya-gray-400;
+  font-size: $font-size-sm;
+  padding: $spacing-md 0;
+}
+
+.sidebar-link {
+  display: block;
+  text-align: center;
+  font-size: $font-size-xs;
+  color: $maya-teal;
+  font-weight: 600;
+  margin-top: $spacing-sm;
+  text-decoration: none;
+
+  &:hover { text-decoration: underline; }
+}
+
+// ── Satisfação ────────────────────────────────────
+.satisfaction-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.satisfaction-gauge {
+  position: relative;
+  width: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  svg { width: 120px; }
+
+  .gauge-emoji {
+    font-size: $font-size-xl;
+    margin-top: -8px;
+  }
+
+  .gauge-label {
+    font-size: $font-size-sm;
+    font-weight: 700;
+    color: $maya-teal;
+  }
+}
+
+.satisfaction-text {
+  font-size: $font-size-sm;
+  color: $maya-gray-600;
+  text-align: center;
+  margin: 0;
+
+  strong { color: $maya-dark-teal; }
 }

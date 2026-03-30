@@ -1,91 +1,166 @@
-<div class="dashboard">
+<div class="dashboard-layout">
+
+  <!-- Conteúdo principal -->
+  <div class="dashboard-main">
 
     <!-- Header -->
     <div class="dashboard-header">
-      <div>
-        <h1 class="greeting">{{ greeting }}, {{ getFirstName() }} 👋</h1>
-        <p class="date-label">{{ formatDate(today) }}</p>
+      <h1 class="greeting">Olá, Dra. Maya.</h1>
+      <p class="subtitle">Veja o resumo da sua clínica hoje.</p>
+    </div>
+
+    <div *ngIf="!isLoading">
+
+      <!-- Cards principais -->
+      <div class="main-cards">
+
+        <a routerLink="/patients" class="main-card main-card--coral">
+          <div class="card-content">
+            <span class="card-label">PACIENTES ATIVOS</span>
+            <span class="card-value">{{ totalActivePatients }}</span>
+            <span class="card-sub">+ 2 este mês</span>
+          </div>
+          <div class="card-shape card-shape--coral"></div>
+        </a>
+
+        <a routerLink="/patients" class="main-card main-card--teal">
+          <div class="card-content">
+            <span class="card-label">TOTAL DE PACIENTES</span>
+            <span class="card-value">{{ totalPatients }}</span>
+            <span class="card-sub">+ 3 este mês</span>
+          </div>
+          <div class="card-shape card-shape--teal"></div>
+        </a>
+
       </div>
-    </div>
 
-    <!-- Aniversários de hoje -->
-    <div class="birthday-banner" *ngIf="birthdaysToday.length > 0 && !isLoading">
-      <span class="birthday-icon">🎂</span>
-      <div class="birthday-text">
-        <strong>Aniversário hoje!</strong>
-        <span *ngFor="let b of birthdaysToday; let last = last">
-          {{ b.name }} ({{ b.age }} anos){{ !last ? ', ' : '' }}
-        </span>
+      <!-- Agendamentos e próximo paciente -->
+      <div class="appointments-row">
+
+        <div class="appointments-card">
+          <h3 class="card-title">ATENDIMENTOS DE HOJE</h3>
+          <div class="appointments-list" *ngIf="appointmentsToday.length > 0">
+            <div class="appointment-item" *ngFor="let a of appointmentsToday">
+              <span class="appointment-time">{{ formatTime(a.dateTime) }}</span>
+              <span class="appointment-separator">|</span>
+              <span class="appointment-name">{{ a.patient.fullName }} - {{ getTypeLabel(a.type) }}</span>
+            </div>
+          </div>
+          <div class="appointments-empty" *ngIf="appointmentsToday.length === 0">
+            <p>Nenhum atendimento hoje</p>
+            <span class="link-add">+ Agendar sessão (em breve)</span>
+          </div>
+        </div>
+
+        <div class="next-card" *ngIf="nextAppointment">
+          <span class="next-label">PRÓXIMO PACIENTE</span>
+          <span class="next-name">{{ nextAppointment.patient.fullName }}</span>
+          <span class="next-time">{{ formatTime(nextAppointment.dateTime) }} - {{ getTypeLabel(nextAppointment.type) }}</span>
+        </div>
+
+        <div class="next-card next-card--empty" *ngIf="!nextAppointment">
+          <span class="next-label">PRÓXIMO PACIENTE</span>
+          <span class="next-name-empty">Nenhum agendado</span>
+          <span class="link-add">+ Agendar (em breve)</span>
+        </div>
+
       </div>
-      <a routerLink="/birthdays" class="birthday-link">Ver todos →</a>
-    </div>
 
-    <!-- Cards de estatísticas -->
-    <div class="stats-grid">
-
-      <a routerLink="/patients" class="stat-card stat-card--teal">
-        <div class="stat-icon">👥</div>
-        <div class="stat-body">
-          <span class="stat-value" *ngIf="!isLoading">{{ totalActivePatients }}</span>
-          <span class="stat-value loading-pulse" *ngIf="isLoading">--</span>
-          <span class="stat-label">Pacientes ativos</span>
+      <!-- Calendário -->
+      <div class="calendar-card">
+        <div class="calendar-header">
+          <span class="calendar-title">MEU CALENDARIO</span>
+          <div class="calendar-month">
+            <span>{{ getMes() }}</span>
+            <span class="dropdown-arrow">▼</span>
+          </div>
         </div>
-        <span class="stat-arrow">→</span>
-      </a>
 
-      <a routerLink="/exercises" class="stat-card stat-card--blue">
-        <div class="stat-icon">🏋️</div>
-        <div class="stat-body">
-          <span class="stat-value" *ngIf="!isLoading">{{ totalExercises }}</span>
-          <span class="stat-value loading-pulse" *ngIf="isLoading">--</span>
-          <span class="stat-label">Exercícios cadastrados</span>
+        <div class="week-days">
+          <div
+            class="week-day"
+            *ngFor="let d of getWeekDays()"
+            [class.active]="d.isToday">
+            <span class="day-label">{{ d.label }}</span>
+            <span class="day-number">{{ d.day }}</span>
+          </div>
         </div>
-        <span class="stat-arrow">→</span>
-      </a>
 
-      <a routerLink="/medical-records" class="stat-card stat-card--coral">
-        <div class="stat-icon">📁</div>
-        <div class="stat-body">
-          <span class="stat-value" *ngIf="!isLoading">{{ birthdaysToday.length > 0 ? '🎉' : '📋' }}</span>
-          <span class="stat-value loading-pulse" *ngIf="isLoading">--</span>
-          <span class="stat-label">Prontuários</span>
+        <div class="calendar-appointments">
+          <div class="cal-appointment" *ngFor="let a of appointmentsToday">
+            <span class="cal-time">{{ formatTime(a.dateTime) }}</span>
+            <span class="cal-name">| {{ a.patient.fullName }} - {{ getTypeLabel(a.type) }}</span>
+          </div>
+          <div class="cal-empty" *ngIf="appointmentsToday.length === 0">
+            <span>Sem atendimentos hoje</span>
+          </div>
         </div>
-        <span class="stat-arrow">→</span>
-      </a>
-
-      <a routerLink="/birthdays" class="stat-card stat-card--success">
-        <div class="stat-icon">🎂</div>
-        <div class="stat-body">
-          <span class="stat-value" *ngIf="!isLoading">{{ birthdaysToday.length }}</span>
-          <span class="stat-value loading-pulse" *ngIf="isLoading">--</span>
-          <span class="stat-label">Aniversários hoje</span>
-        </div>
-        <span class="stat-arrow">→</span>
-      </a>
+      </div>
 
     </div>
 
-    <!-- Atalhos rápidos -->
-    <div class="quick-actions">
-      <h2 class="section-title">Ações rápidas</h2>
-      <div class="actions-grid">
-        <a routerLink="/patients/new" class="action-card">
-          <span class="action-icon">➕</span>
-          <span class="action-label">Novo paciente</span>
-        </a>
-        <a routerLink="/medical-records/new" class="action-card">
-          <span class="action-icon">📝</span>
-          <span class="action-label">Novo prontuário</span>
-        </a>
-        <a routerLink="/prescriptions" class="action-card">
-          <span class="action-icon">📋</span>
-          <span class="action-label">Prescrições</span>
-        </a>
-        <a routerLink="/exercises/new" class="action-card">
-          <span class="action-icon">🏋️</span>
-          <span class="action-label">Novo exercício</span>
-        </a>
+    <!-- Loading -->
+    <div class="loading-state" *ngIf="isLoading">
+      <p>Carregando...</p>
+    </div>
+
+  </div>
+
+  <!-- Painel direito -->
+  <div class="dashboard-sidebar" *ngIf="!isLoading">
+
+    <!-- Aniversariantes da Semana -->
+    <div class="sidebar-card">
+      <h3 class="sidebar-title">Aniversariantes da Semana</h3>
+
+      <div *ngIf="birthdaysWeek.length > 0">
+        <div class="birthday-group" *ngFor="let b of birthdaysWeek">
+          <span class="birthday-date">DIA: {{ b.day }}/{{ today | date:'MM' }}</span>
+          <div class="birthday-item" [class.birthday-today]="b.isToday">
+            <div class="birthday-avatar">{{ getInitials(b.name) }}</div>
+            <div class="birthday-info">
+              <span class="birthday-msg">
+                Hoje é o dia de: {{ b.name }}. Que tal enviar um parabéns?
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-empty" *ngIf="birthdaysWeek.length === 0">
+        <p>Nenhum aniversário esta semana</p>
+      </div>
+
+      <a routerLink="/birthdays" class="sidebar-link">Ver todos →</a>
+    </div>
+
+    <!-- Satisfação dos Pacientes -->
+    <div class="sidebar-card">
+      <h3 class="sidebar-title">Satisfação dos Pacientes</h3>
+
+      <div class="satisfaction-body" *ngIf="satisfaction && satisfaction.total > 0">
+        <div class="satisfaction-gauge">
+          <div class="gauge-arc">
+            <svg viewBox="0 0 120 70" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 10 65 A 50 50 0 0 1 110 65" fill="none" stroke="#E2DFD5" stroke-width="10" stroke-linecap="round"/>
+              <path d="M 10 65 A 50 50 0 0 1 110 65" fill="none" stroke="#2B7A8C" stroke-width="10" stroke-linecap="round"
+                [attr.stroke-dasharray]="(satisfaction.percentage / 100) * 157 + ' 157'"
+                stroke-dashoffset="0"/>
+            </svg>
+          </div>
+          <div class="gauge-emoji">🙂</div>
+          <div class="gauge-label">{{ getSatisfactionLabel(satisfaction.mostCommon) }}</div>
+        </div>
+        <p class="satisfaction-text">
+          <strong>{{ satisfaction.percentage }}%</strong> dos pacientes estão satisfeitos
+        </p>
+      </div>
+
+      <div class="sidebar-empty" *ngIf="!satisfaction || satisfaction.total === 0">
+        <p>Nenhuma avaliação ainda</p>
       </div>
     </div>
 
   </div>
+
+</div>
