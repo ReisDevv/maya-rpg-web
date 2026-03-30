@@ -1,62 +1,82 @@
 <div class="login-page">
-  <div class="login-card">
-    <div class="login-header">
-      <div class="brand">
-        <span class="brand-maya">maya</span>
+
+  <!-- Painel esquerdo — gradiente coral com logo -->
+  <div class="login-left">
+  <div class="left-circles">
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
+  </div>
+  <div class="top-circles">
+    <div class="top-circle top-circle-1"></div>
+    <div class="top-circle top-circle-2"></div>
+  </div>
+    <div class="brand">
+      <span class="brand-maya">maya</span>
+      <div class="brand-bottom">
         <span class="brand-yamamoto">yamamoto</span>
         <span class="brand-rpg">rpg</span>
       </div>
-      <p class="login-subtitle">Painel do Profissional</p>
     </div>
-
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-      <div class="form-group">
-        <label for="email" class="form-label">E-mail</label>
-        <input
-          id="email"
-          type="email"
-          formControlName="email"
-          class="form-input"
-          placeholder="seu@email.com"
-          [class.invalid]="email?.invalid && email?.touched"
-        />
-        <span class="form-error" *ngIf="email?.invalid && email?.touched">
-          <span *ngIf="email?.errors?.['required']">E-mail é obrigatório</span>
-          <span *ngIf="email?.errors?.['email']">E-mail inválido</span>
-        </span>
-      </div>
-
-      <div class="form-group">
-        <label for="password" class="form-label">Senha</label>
-        <input
-          id="password"
-          type="password"
-          formControlName="password"
-          class="form-input"
-          placeholder="••••••••"
-          [class.invalid]="password?.invalid && password?.touched"
-        />
-        <span class="form-error" *ngIf="password?.invalid && password?.touched">
-          <span *ngIf="password?.errors?.['required']">Senha é obrigatória</span>
-          <span *ngIf="password?.errors?.['minlength']">Mínimo de 6 caracteres</span>
-        </span>
-      </div>
-
-      <div class="form-error-global" *ngIf="errorMessage">
-        {{ errorMessage }}
-      </div>
-
-      <button
-        type="submit"
-        class="btn-login"
-        [disabled]="isLoading"
-      >
-        {{ isLoading ? 'Entrando...' : 'Entrar' }}
-      </button>
-
-      <a routerLink="/auth/recover-password" class="forgot-link">
-        Esqueceu sua senha?
-      </a>
-    </form>
   </div>
+
+  <!-- Painel direito — formulário -->
+  <div class="login-right">
+    <div class="login-form-wrapper">
+      <h1 class="login-title">Bem-Vindo de Volta!!</h1>
+      <p class="login-subtitle">Gerencie seus pacientes e planos de exercícios com segurança</p>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+
+        <div class="form-group">
+          <div class="input-wrapper">
+            <span class="input-icon">✉️</span>
+            <input
+              id="email"
+              type="email"
+              formControlName="email"
+              class="form-input"
+              placeholder="exemplo@clinicamaya.com.br"
+              [class.invalid]="email?.invalid && email?.touched"
+            />
+          </div>
+          <span class="form-error" *ngIf="email?.invalid && email?.touched">
+            <span *ngIf="email?.errors?.['required']">E-mail é obrigatório</span>
+            <span *ngIf="email?.errors?.['email']">E-mail inválido</span>
+          </span>
+        </div>
+
+        <div class="form-group">
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input
+              id="password"
+              type="password"
+              formControlName="password"
+              class="form-input"
+              placeholder="••••••••••••"
+              [class.invalid]="password?.invalid && password?.touched"
+            />
+          </div>
+          <span class="form-error" *ngIf="password?.invalid && password?.touched">
+            <span *ngIf="password?.errors?.['required']">Senha é obrigatória</span>
+            <span *ngIf="password?.errors?.['minlength']">Mínimo de 6 caracteres</span>
+          </span>
+        </div>
+
+        <div class="form-error-global" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+
+        <button type="submit" class="btn-login" [disabled]="isLoading">
+          {{ isLoading ? 'Entrando...' : 'ENTRAR' }}
+        </button>
+
+        <a routerLink="/auth/recover-password" class="forgot-link">
+          Esqueceu sua senha?
+        </a>
+
+      </form>
+    </div>
+  </div>
+
 </div>
