@@ -7,16 +7,15 @@
 
 .layout-main {
   flex: 1;
-  margin-left: $sidebar-width;
-  transition: margin-left 0.3s ease;
-
-  .sidebar-collapsed & {
-    margin-left: $sidebar-collapsed-width;
-  }
+  margin-left: 160px;
+  display: flex;
+  flex-direction: column;
 }
 
 .layout-content {
+  flex: 1;
   padding: $spacing-xl;
   margin-top: $header-height;
   min-height: calc(100vh - #{$header-height});
+  background: $maya-off-white;
 }

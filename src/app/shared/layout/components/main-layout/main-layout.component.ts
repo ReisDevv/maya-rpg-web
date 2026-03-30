@@ -9,12 +9,8 @@ import { HeaderComponent } from '../header/header.component';
   standalone: true,
   imports: [CommonModule, RouterModule, SidebarComponent, HeaderComponent],
   template: `
-    <div class="layout" [class.sidebar-collapsed]="sidebarCollapsed">
-      <app-sidebar
-        [collapsed]="sidebarCollapsed"
-        (collapsedChange)="sidebarCollapsed = $event"
-      ></app-sidebar>
-
+    <div class="layout">
+      <app-sidebar></app-sidebar>
       <div class="layout-main">
         <app-header></app-header>
         <main class="layout-content">
@@ -25,6 +21,4 @@ import { HeaderComponent } from '../header/header.component';
   `,
   styleUrl: './main-layout.component.scss',
 })
-export class MainLayoutComponent {
-  sidebarCollapsed = false;
-}
+export class MainLayoutComponent {}

@@ -1,95 +1,172 @@
 @use '../../../../shared/styles/variables' as *;
-@use '../../../../shared/styles/mixins' as *;
 
 .header {
-  @include flex-between;
   position: fixed;
   top: 0;
+  left: 160px;
   right: 0;
-  left: $sidebar-width;
   height: $header-height;
+  background: $maya-white;
+  display: flex;
+  align-items: center;
   padding: 0 $spacing-xl;
-  background-color: $maya-white;
-  border-bottom: 1px solid $maya-gray-200;
-  z-index: 90;
-  transition: left 0.3s ease;
+  z-index: 99;
+  border-bottom: 1px solid $maya-gray-100;
+  gap: $spacing-lg;
+}
 
-  :host-context(.sidebar-collapsed) & {
-    left: $sidebar-collapsed-width;
+// ── Centro — pesquisa + atalhos ───────────────────
+.header-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  background: $maya-gray-100;
+  border-radius: 50px;
+  padding: 8px $spacing-md;
+  min-width: 200px;
+
+  .search-icon {
+    font-size: $font-size-sm;
+    opacity: 0.5;
+  }
+
+  .search-input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: $font-size-sm;
+    color: $maya-gray-600;
+    width: 160px;
+    font-family: $font-primary;
+
+    &::placeholder {
+      color: $maya-gray-300;
+    }
   }
 }
 
-.page-title {
-  font-size: $font-size-xl;
-  font-weight: 600;
-  color: $maya-gray-700;
+.header-shortcuts {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
 }
 
+.shortcut-btn {
+  padding: 6px $spacing-md;
+  border: 1.5px dashed $maya-gray-300;
+  border-radius: 50px;
+  font-size: $font-size-xs;
+  color: $maya-gray-500;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: $maya-teal;
+    color: $maya-teal;
+  }
+}
+
+// ── Direita ───────────────────────────────────────
 .header-right {
   display: flex;
   align-items: center;
   gap: $spacing-md;
 }
 
-.user-menu {
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid $maya-gray-200;
+  background: $maya-white;
   display: flex;
   align-items: center;
-  gap: $spacing-sm;
-  padding: $spacing-xs $spacing-sm;
-  border-radius: $radius-md;
+  justify-content: center;
+  font-size: $font-size-base;
   cursor: pointer;
-  position: relative;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s;
 
   &:hover {
-    background-color: $maya-gray-100;
+    border-color: $maya-teal;
+    background: rgba($maya-teal, 0.05);
   }
 }
 
-.user-avatar {
-  @include flex-center;
-  width: 36px;
-  height: 36px;
-  border-radius: $radius-full;
-  background-color: $maya-teal;
-  color: $maya-white;
-  font-size: $font-size-sm;
-  font-weight: 600;
+.notif-btn {
+  position: relative;
+
+  .notif-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 8px;
+    height: 8px;
+    background: $maya-coral;
+    border-radius: 50%;
+    border: 2px solid $maya-white;
+  }
 }
 
-.user-name {
-  font-size: $font-size-sm;
-  color: $maya-gray-600;
-  font-weight: 500;
+.user-btn {
+  position: relative;
+  cursor: pointer;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: $maya-teal;
+  color: $maya-white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-xs;
+  font-weight: 700;
 }
 
 .dropdown-menu {
   position: absolute;
-  top: 100%;
+  top: 44px;
   right: 0;
-  margin-top: $spacing-xs;
-  min-width: 160px;
-  background-color: $maya-white;
+  background: $maya-white;
   border: 1px solid $maya-gray-200;
   border-radius: $radius-md;
-  box-shadow: $shadow-lg;
-  overflow: hidden;
-}
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: $spacing-sm;
+  min-width: 160px;
+  z-index: 200;
 
-.dropdown-item {
-  display: block;
-  width: 100%;
-  padding: $spacing-sm $spacing-md;
-  border: none;
-  background: none;
-  text-align: left;
-  font-family: $font-primary;
-  font-size: $font-size-sm;
-  color: $maya-gray-600;
-  cursor: pointer;
+  .dropdown-name {
+    display: block;
+    font-size: $font-size-xs;
+    color: $maya-gray-400;
+    padding: $spacing-xs $spacing-sm;
+    border-bottom: 1px solid $maya-gray-100;
+    margin-bottom: $spacing-xs;
+  }
 
-  &:hover {
-    background-color: $maya-gray-100;
+  .dropdown-item {
+    width: 100%;
+    text-align: left;
+    padding: $spacing-xs $spacing-sm;
+    border: none;
+    background: none;
+    font-size: $font-size-sm;
     color: $maya-danger;
+    cursor: pointer;
+    border-radius: $radius-sm;
+
+    &:hover {
+      background: rgba($maya-danger, 0.06);
+    }
   }
 }

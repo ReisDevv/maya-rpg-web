@@ -1,127 +1,118 @@
 @use '../../../../shared/styles/variables' as *;
-@use '../../../../shared/styles/mixins' as *;
 
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
-  width: $sidebar-width;
-  background-color: $maya-dark-teal;
-  color: $maya-white;
+  width: 160px;
+  background-color: #F5EFE6;
   display: flex;
   flex-direction: column;
-  transition: width 0.3s ease;
   z-index: 100;
-  overflow: hidden;
-
-  &.collapsed {
-    width: $sidebar-collapsed-width;
-  }
+  border-right: 1px solid rgba($maya-brown, 0.1);
 }
 
-.sidebar-header {
-  @include flex-center;
-  height: $header-height;
-  padding: $spacing-md;
-  border-bottom: 1px solid rgba($maya-white, 0.1);
+// ── Logo ──────────────────────────────────────────
+.sidebar-logo {
+  padding: 20px 16px 24px;
+  border-bottom: 1px solid rgba($maya-brown, 0.15);
 }
 
-.logo {
+.logo-brand {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: $spacing-xs;
+  flex-direction: column;
+  align-items: flex-start;
 
-  &-maya {
+  .logo-maya {
     font-family: $font-display;
-    font-size: $font-size-2xl;
+    font-size: 1.8rem;
     font-weight: 700;
-    color: $maya-light-blue;
+    color: $maya-teal;
     letter-spacing: 2px;
+    line-height: 1;
   }
 
-  &-yamamoto {
+  .logo-sub {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .logo-yamamoto {
     font-size: $font-size-xs;
-    color: $maya-gray-300;
+    color: $maya-gray-500;
     letter-spacing: 1px;
   }
 
-  &-rpg {
-    font-family: $font-display;
-    font-size: $font-size-sm;
-    font-weight: 600;
+  .logo-rpg {
+    font-size: $font-size-xs;
     color: $maya-coral;
+    font-weight: 600;
     letter-spacing: 1px;
   }
 }
 
-.logo-icon {
-  font-family: $font-display;
-  font-size: $font-size-2xl;
-  font-weight: 700;
-  color: $maya-light-blue;
-}
-
+// ── Nav ───────────────────────────────────────────
 .sidebar-nav {
   flex: 1;
   display: flex;
   flex-direction: column;
   padding: $spacing-md $spacing-sm;
-  gap: $spacing-xs;
+  gap: 4px;
   overflow-y: auto;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  gap: $spacing-md;
-  padding: $spacing-sm $spacing-md;
-  border-radius: $radius-md;
-  color: rgba($maya-white, 0.7);
+  gap: $spacing-sm;
+  padding: 10px $spacing-md;
+  border-radius: $radius-lg;
+  color: $maya-gray-500;
   font-size: $font-size-sm;
   font-weight: 400;
   transition: all 0.2s ease;
-  white-space: nowrap;
   text-decoration: none;
+  white-space: nowrap;
 
   &:hover {
-    background-color: rgba($maya-white, 0.08);
-    color: $maya-white;
+    background-color: rgba($maya-brown, 0.08);
+    color: $maya-brown;
   }
 
   &.active {
-    background-color: rgba($maya-light-blue, 0.15);
-    color: $maya-light-blue;
-    font-weight: 500;
-  }
-}
-
-.nav-icon {
-  font-size: $font-size-lg;
-  width: 24px;
-  text-align: center;
-  flex-shrink: 0;
-}
-
-.nav-label {
-  @include text-truncate;
-}
-
-.toggle-btn {
-  @include flex-center;
-  height: 44px;
-  margin: $spacing-sm;
-  border: none;
-  border-radius: $radius-md;
-  background-color: rgba($maya-white, 0.06);
-  color: rgba($maya-white, 0.5);
-  cursor: pointer;
-  font-size: $font-size-sm;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background-color: rgba($maya-white, 0.12);
+    background-color: $maya-brown;
     color: $maya-white;
+    font-weight: 600;
+
+    .nav-icon {
+      filter: brightness(10);
+    }
   }
+
+  .nav-icon {
+    font-size: 1.1rem;
+    width: 22px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .nav-label {
+    font-size: $font-size-sm;
+  }
+}
+
+// ── Footer ────────────────────────────────────────
+.sidebar-footer {
+  padding: $spacing-sm;
+  border-top: 1px solid rgba($maya-brown, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-item--footer {
+  color: $maya-gray-400;
+  font-size: $font-size-xs;
 }

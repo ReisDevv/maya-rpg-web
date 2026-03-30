@@ -13,16 +13,19 @@ interface NavItem {
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
-    <aside class="sidebar" [class.collapsed]="collapsed">
-      <div class="sidebar-header">
-        <div class="logo" *ngIf="!collapsed">
+    <aside class="sidebar">
+      <!-- Logo -->
+      <div class="sidebar-logo">
+        <div class="logo-brand">
           <span class="logo-maya">maya</span>
-          <span class="logo-yamamoto">yamamoto</span>
-          <span class="logo-rpg">rpg</span>
+          <div class="logo-sub">
+            <span class="logo-yamamoto">yamamoto</span>
+            <span class="logo-rpg">rpg</span>
+          </div>
         </div>
-        <span class="logo-icon" *ngIf="collapsed">M</span>
       </div>
 
+      <!-- Nav principal -->
       <nav class="sidebar-nav">
         <a
           *ngFor="let item of navItems"
@@ -31,33 +34,34 @@ interface NavItem {
           class="nav-item"
           [title]="item.label"
         >
-          <span class="nav-icon">{{ item.icon }}</span>
-          <span class="nav-label" *ngIf="!collapsed">{{ item.label }}</span>
+          <span class="nav-icon" [innerHTML]="item.icon"></span>
+          <span class="nav-label">{{ item.label }}</span>
         </a>
       </nav>
 
-      <button class="toggle-btn" (click)="toggleCollapse()">
-        {{ collapsed ? '▶' : '◀' }}
-      </button>
+      <!-- Rodapé -->
+      <div class="sidebar-footer">
+        <a routerLink="/settings" class="nav-item nav-item--footer" title="Configuração">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-label">Configuração</span>
+        </a>
+        <a routerLink="/auth/login" class="nav-item nav-item--footer" title="Log out">
+          <span class="nav-icon">🚪</span>
+          <span class="nav-label">Log out</span>
+        </a>
+      </div>
     </aside>
   `,
   styleUrl: './sidebar.component.scss',
 })
 export class SidebarComponent {
-  @Input() collapsed = false;
-  @Output() collapsedChange = new EventEmitter<boolean>();
-
   navItems: NavItem[] = [
-    { label: 'Dashboard', icon: '📊', route: '/dashboard' },
+    { label: 'Home', icon: '🏠', route: '/dashboard' },
     { label: 'Pacientes', icon: '👥', route: '/patients' },
-    { label: 'Exercícios', icon: '🏋️', route: '/exercises' },
-    { label: 'Prescrições', icon: '📋', route: '/prescriptions' },
-    { label: 'Prontuários', icon: '📁', route: '/medical-records' },
+    { label: 'Prontuários', icon: '📋', route: '/medical-records' },
+    { label: 'Exercícios', icon: '⚙️', route: '/exercises' },
+    { label: 'Prescrições', icon: '📁', route: '/prescriptions' },
     { label: 'Aniversários', icon: '🎂', route: '/birthdays' },
+    { label: 'Usuários', icon: '👤', route: '/users' },
   ];
-
-  toggleCollapse(): void {
-    this.collapsed = !this.collapsed;
-    this.collapsedChange.emit(this.collapsed);
-  }
 }

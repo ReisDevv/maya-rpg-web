@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { User } from '../../../../core/entities';
 import { IAuthService } from '../../../../core/interfaces';
 import { AUTH_SERVICE } from '../../../../core/tokens/injection-tokens';
@@ -9,26 +9,35 @@ import { TokenStorageService } from '../../../../data/services/token-storage.ser
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   template: `
     <header class="header">
-      <div class="header-left">
-        <h2 class="page-title">{{ pageTitle }}</h2>
+      <!-- Pesquisa + atalhos -->
+      <div class="header-center">
+        <div class="search-wrapper">
+          <span class="search-icon">🔍</span>
+          <input type="text" class="search-input" placeholder="Pesquise algo aqui" />
+        </div>
+        <div class="header-shortcuts">
+          <a routerLink="/medical-records" class="shortcut-btn">Prontuários</a>
+          <a routerLink="/appointments" class="shortcut-btn">Agenda</a>
+        </div>
       </div>
 
+      <!-- Ações direita -->
       <div class="header-right">
-        <div class="user-menu" (click)="toggleMenu()">
-          <div class="user-avatar">
-            {{ userInitials }}
-          </div>
-          <span class="user-name">{{ currentUser?.name || 'Profissional' }}</span>
-
+        <button class="icon-btn" title="Configurações">⚙️</button>
+        <div class="user-btn" (click)="toggleMenu()">
+          <div class="user-avatar">{{ userInitials }}</div>
           <div class="dropdown-menu" *ngIf="menuOpen">
-            <button class="dropdown-item" (click)="logout()">
-              Sair
-            </button>
+            <span class="dropdown-name">{{ currentUser?.name }}</span>
+            <button class="dropdown-item" (click)="logout()">Sair</button>
           </div>
         </div>
+        <button class="icon-btn notif-btn" title="Notificações">
+          🔔
+          <span class="notif-badge"></span>
+        </button>
       </div>
     </header>
   `,
@@ -36,19 +45,22 @@ import { TokenStorageService } from '../../../../data/services/token-storage.ser
 })
 export class HeaderComponent implements OnInit {
   currentUser: User | null = null;
-  pageTitle = 'Dashboard';
   menuOpen = false;
 
   constructor(
     @Inject(AUTH_SERVICE) private readonly authService: IAuthService,
     private readonly tokenStorage: TokenStorageService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
     if (this.tokenStorage.isAuthenticated()) {
       this.authService.getCurrentUser().subscribe({
-        next: (user) => (this.currentUser = user),
+        next: (user) => {
+          this.currentUser = user;
+          this.cdr.detectChanges();
+        },
       });
     }
   }
